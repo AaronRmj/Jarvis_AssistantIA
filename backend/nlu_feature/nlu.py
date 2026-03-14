@@ -60,7 +60,7 @@ def nettoyer_donnees(brute):
     # Creer une liste sans doublons
     vocabulaire_globale = list(set(dictionnaire_mots))
     print("Nettoyage terminé")
-    print(dataset_entrainement)
+    print(vocabulaire_globale)
 
     # Retourner Intentions et liste de mots uniques 
     return dataset_entrainement, dictionnaire_mots 
