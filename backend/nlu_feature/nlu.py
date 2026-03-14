@@ -17,59 +17,53 @@ def charger_dataset():
     except Exception as e:
         print("Une erreur est survenue")   
 
-#Nettoyage input user pour le test
-def nettoyer_phrase():  #lowercase puis supprimer ponctuation, et enfin split la phrase
-    ponctuation = string.punctuation
-    phrase = str(input("Entrez une commande:\n")).lower()
-    for symbole in ponctuation:
-        phrase = phrase.replace(symbole,"")
-    resultat = phrase.split()
-    print(resultat)
-    
 
-#fonction de nettoyage
-def nettoyer_donnees(dataset_brute):
-    if dataset_brute is None:
-        return
-    
-    donnees_stockees = []
-    stop_words = ["mba", "ny","azafady","kely","hoe"]
-    
-    #separation des donnees par lignes
-    lignes = dataset_brute.split("\n")
-    print("Nb de lignes: ", {len(lignes)})
-    
 
-    #separation des actions et commandes
-    for ligne in lignes:
+#Nettoyage des données 
+def nettoyer_donnees(brute):
+    if brute is None:
+        return 
+    
+    dataset_entrainement = [] # ex: Sokafy chrome, ouvrir_chrome()
+    stop_words = ["mba", "indrindra", "koa", "ny", "azafady"]
+    dictionnaire_mots = [] # liste de tous les mots uniques
+
+    # Separation par lignes du dataset.csv
+    lignes = brute.split("\n")
+    for ligne in lignes: 
         if not ligne or ',' not in ligne:
             continue
 
-        #decouper l'action par ,
-        action = ligne.split(",")
+        # Separation de l'action et commande
+        ligne_nettoye = ligne.lower().strip()
+        
+        # Apres division du texte    
+        colonnes = ligne_nettoye.split(",")
 
-        #on nettoye d'abord le texte (miniscule, espace inutile)
-        phrase_propre = action[0].lower().strip()
+        ordre_nettoye = colonnes[0].lower().strip()
+
+        # Enlever ponctuation
         ponctuation = string.punctuation
         for symbole in ponctuation:
-            phrase_propre = phrase_propre.replace(symbole,"")
+            ordre_nettoye = ordre_nettoye.replace(symbole, "")
+        
+        # Transformation phrase en liste de mots
+        tokens = ordre_nettoye.split(" ")
 
-            #On le divise en dernier lieu apres avoir tout fait
-            mots_liste = phrase_propre.split()
+        # Mots inutile ou mots filrés
+        features = [mot for mot in tokens if mot not in stop_words]
 
-            #garder le mot dans la liste si le mot n'est pas dans stop words
-            mots_filtre = [mot for mot in mots_liste if mot not in stop_words]
-        donnees_stockees.append([mots_filtre, action[1].strip()])
-
+        # Ajout 1 par 1 de tous les mots existants
+        dictionnaire_mots.extend(features)
+        dataset_entrainement.append([features, colonnes[1].strip()])
+        
+    # Creer une liste sans doublons
+    vocabulaire_globale = list(set(dictionnaire_mots))
     print("Nettoyage terminé")
-    print(donnees_stockees)
+    print(dataset_entrainement)
 
+    # Retourner Intentions et liste de mots uniques 
+    return dataset_entrainement, dictionnaire_mots 
 
-donnees_brute = charger_dataset()
-nettoyer_donnees(donnees_brute)
-
-
-"""Prochaine etape:
- Lister les mots uniques du dataset
- Debuter l'algorithme des K plus proche voisin 
- """
+dataset_brute = charger_dataset()
+nettoyer_donnees(dataset_brute)
