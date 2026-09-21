@@ -61,7 +61,7 @@ def interpreter_commande(commande:str = None):
     mots_identite = ["qui", "tu", "es", "estu", "nom", "appelle", "appelles", 
     "presente", "presentez", "presenter", "presentation", 
     "identite", "cree", "creer", "concue", "concu", 
-    "fabriquer", "developper", "toi", "vous", "jarvis"]
+    "fabriquer", "developper", "toi", "vous"]
 
     if sum(1 for m in clean_sentence if m in mots_identite) >= 2:
         return ("presentation_jarvis", clean_sentence) # Ajoute un return pour arrêter la fonction ici
@@ -80,7 +80,7 @@ def interpreter_commande(commande:str = None):
     indice_min = np.argmin(tous_les_scores)
     score = tous_les_scores[indice_min]
     print(score)
-    seuil = 0.9
+    seuil = 1.2
     print(f"score:{score} ,{dataset_entrainement[indice_min][1]}")
     if score <= seuil:
 

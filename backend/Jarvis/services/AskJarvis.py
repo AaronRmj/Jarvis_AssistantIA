@@ -2,70 +2,36 @@ import requests
 from dotenv import load_dotenv
 import os
 
-load_dotenv()  
-
-
-#Modification pour l'importer dans le KNN (response non programmé)
+load_dotenv() 
 
 def ask_jarvis(question):
-    url = "https://models.github.ai/inference/chat/completions"
-    ApiKey =os.getenv('API_KEY')
+    API_KEY = os.getenv("GROQ_API_KEY")
+    MODEL = "openai/gpt-oss-20b" 
+
+    url = "https://api.groq.com/openai/v1/chat/completions"
 
     headers = {
-        "Accept": "application/vnd.github+json",
-        "Authorization": f"Bearer {ApiKey}",
-        "X-GitHub-Api-Version": "2022-11-28",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {API_KEY}",
     }
 
-    data = {
-        "model": "openai/gpt-4o-mini",
+    payload = {
+        "model": MODEL,
         "messages": [
-            {"role": "system", "content": "Tu es JARVIS. Tu dois répondre EXCLUSIVEMENT en français, de manière concise et polie. Ne réponds jamais dans une autre langue"},
+            {"role": "system", "content": "Tu es JARVIS. Tu dois répondre EXCLUSIVEMENT en français, de manière concise et polie. Ne réponds jamais dans une autre langue et ne dépasse pas les 80 tokens pour tes réponses"},
             {"role": "user", "content": question}
         ]
     }
 
     try:
-        response = requests.post(url, headers=headers, json=data)
-        if response.status_code == 200:
-            reponse_texte = response.json()["choices"][0]["message"]["content"]
-            return reponse_texte
-        else:
-            return "Désolé monsieur, je recontre des difficultés de connexion"
+        response = requests.post(url, headers=headers, json=payload)
+        print(response.status_code)
+        print(response.text)  # check this if something goes wrong, before raise_for_status
+        response.raise_for_status()
+        data = response.json()
+        text = data["choices"][0]["message"]["content"]
+        print(text)
+
+        return text
     except Exception as e:
         return f"Erreur de communication: {e}"
-
-"""import requests
-from dotenv import load_dotenv
-import os
-
-load_dotenv()  
-
-
-#Modification pour l'importer dans le KNN (response non programmé)
-
-def ask_jarvis(question):
-    url = "https://models.github.ai/inference/chat/completions"
-    ApiKey =os.getenv('API_KEY')
-
-    headers = {
-        "Accept": "application/vnd.github+json",
-        "Authorization": f"Bearer {ApiKey}",
-        "X-GitHub-Api-Version": "2022-11-28",
-        "Content-Type": "application/json"
-    }
-
-    data = {
-        "model": "openai/gpt-4o-mini",
-        "messages": [
-            {"role": "system", "content": "Tu es JARVIS. Tu dois répondre EXCLUSIVEMENT en français, de manière concise et polie. Ne réponds jamais dans une autre langue"},
-            {"role": "user", "content": question}
-        ]
-    }
-
-response = requests.post(url, headers=headers, json=data)
-
-print(response.status_code)
-#print(response.json())
-print(response.json()["choices"][0]["message"]["content"])"""

@@ -4,7 +4,6 @@ import { spawn } from 'child_process';
 const isInDev = !app.isPackaged;
 import {fileURLToPath} from 'url';
 import {dirname} from 'path';
-
 const __filename = fileURLToPath (import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -20,6 +19,14 @@ function createWindow() {
       contextIsolation: true,
     },
 
+  });
+
+  win.webContents.session.setPermissionRequestHandler((webContents, permission, callback) => {
+    if (permission === 'media') {
+      callback(true); // Approuve la demande de micro/caméra
+    } else {
+      callback(false);
+    }
   });
   
     win.setMenuBarVisibility(false);

@@ -42,13 +42,34 @@ def gerer_synonyme(phrase):
 
 
 # Nettoyer une phrase entrée par l'utilisateur
+
+# Nettoyer une phrase entrée par l'utilisateur
 def nettoyer_phrase(sentence):
-    clean_sentence = sentence.lower().strip()
+    if not sentence:
+        return []
+    phrase = sentence.lower().strip()
+    conversions = {
+        'é': 'e', 'è': 'e', 'ê': 'e', 'ë': 'e',
+        'à': 'a', 'â': 'a', 'ä': 'a',
+        'î': 'i', 'ï': 'i',
+        'ô': 'o', 'ö': 'o',
+        'û': 'u', 'ù': 'u', 'ü': 'u',
+        'ç': 'c'
+    }
+
+    clean_sentence = ""
+    for lettre in phrase:
+        if lettre in conversions:
+            clean_sentence += conversions[lettre]
+        else:
+            clean_sentence += lettre
+
     ponctuation = string.punctuation
     for symbole in ponctuation:
-        clean_sentence = clean_sentence.replace(symbole, " ")  
-    
-    return clean_sentence.split(" ")
+        clean_sentence = clean_sentence.replace(symbole, " ")
+
+    return clean_sentence.split()
+
 
 def nettoyer_dataset(brute):
         if brute is None:
@@ -56,7 +77,7 @@ def nettoyer_dataset(brute):
         
         dataset_entrainement = [] # ex: couple [Sokafy chrome, ouvrir_chrome()]
         stop_words = ["est", "ce","que", "tu", "peux", "pourrais","s'il","te", "plait","je", "voudrais","j'aimerais","veux",
-                       "le", "la","les","l'","un","une","des","de","du","pour","au","mon","ma","mes","faire"
+                       "le", "la","les","l'","un","une","des","de","du","pour","au","mon","ma","mes","faire", "jarvis"
                       ]
         dictionnaire_mots = [] # liste de tous les mots uniques
 
