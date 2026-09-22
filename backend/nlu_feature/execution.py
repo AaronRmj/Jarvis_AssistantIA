@@ -5,7 +5,6 @@ from nlu_feature.mail_service import envoyer_mail
 from nlu_feature.audio_service import jouer_audio_aleatoire
 from .shazam import lancer_shazam
 
-
 def executer_commande(prediction, phrase_user):
     if prediction == "ouvrir_chrome":
         webbrowser.open("https://www.google.com")

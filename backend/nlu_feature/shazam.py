@@ -9,11 +9,16 @@ import asyncio
 import sounddevice as sd
 import scipy.io.wavfile as wav
 from shazamio import Shazam
+from pathlib import Path
 
 DURATION = 6
 SAMPLE_RATE = 44100
 TEMP_FILENAME = "temp_capture.wav"
 
+# Chemin vers backend/Jarvis/services/reponse_ia/ia.txt
+IA_TXT_PATH = Path(__file__).resolve().parents[1] / 'Jarvis' / 'services' / 'reponse_ia' / 'ia.txt'
+current_dir = Path(__file__).resolve().parent
+target_file_path = current_dir.parent / "Jarvis" / "services" / "reponse_ia" / "ia.txt"
 
 def record_microphone():
     print("Ecoute en cours...")
@@ -42,6 +47,12 @@ def lancer_shazam():
     print("---------------------")
     if title and artiste:
         print(f"Il s'agit de {title} de {artiste}")
+        # Ecrire le titre identifié dans backend/Jarvis/services/reponse_ia/ia.txt
+        try:
+            with open(target_file_path, "w", encoding="utf-8") as file:
+                file.write(f"Il s'agit de {title} de {artiste}")
+        except Exception as e:
+            print(f"Erreur écriture ia.txt: {e}")
     else: 
         print("impossible d'identifier la musique")
 
