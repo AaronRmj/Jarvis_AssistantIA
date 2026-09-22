@@ -3,7 +3,7 @@ import urllib.parse
 from nlu_feature.gerer_contact import charger_contact
 from nlu_feature.mail_service import envoyer_mail
 from nlu_feature.audio_service import jouer_audio_aleatoire
-
+from .shazam import lancer_shazam
 
 
 def executer_commande(prediction, phrase_user):
@@ -70,6 +70,9 @@ def executer_commande(prediction, phrase_user):
             webbrowser.open(f"https://www.google.com/search?q={query_encode}+youtube&btnI")
         else:
             print("Quel musique veux tu ecouter? ")
+
+    if prediction == "identifier_chanson": 
+         lancer_shazam()
     
     elif prediction == "presentation_jarvis":
         jouer_audio_aleatoire("intro", "intro 1.wav")
