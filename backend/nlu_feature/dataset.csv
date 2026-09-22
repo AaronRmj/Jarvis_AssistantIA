@@ -33,3 +33,18 @@ CONTACTER MAIL, envoyer_mail
 MAIL, envoyer_mail
 REDIGER MESSAGE, envoyer_mail
 REDIGER MAIL, envoyer_mail
+C EST QUOI CETTE MUSIQUE,identifier_chanson
+C EST QUOI CE TITRE,identifier_chanson
+C EST QUOI CETTE CHANSON,identifier_chanson
+QUEL EST LE TITRE DE CETTE CHANSON,identifier_chanson
+QUEL EST CE MORCEAU,identifier_chanson
+IDENTIFIE CETTE MUSIQUE,identifier_chanson
+IDENTIFIER CHANSON,identifier_chanson
+RECONNAIS CETTE MUSIQUE,identifier_chanson
+RECONNAITRE LA CHANSON,identifier_chanson
+SHAZAM CETTE MUSIQUE,identifier_chanson
+LANCE SHAZAM,identifier_chanson
+LANCER SHAZAM,identifier_chanson
+QUI CHANTE CETTE CHANSON,identifier_chanson
+COMMENT S APPELLE CETTE CHANSON,identifier_chanson
+J ECOUTE QUOI EN CE MOMENT,identifier_chanson
